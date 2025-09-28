@@ -1,0 +1,8 @@
+# base core libraries
+
+fastapi==0.117.1 # web framework
+firebase-admin==7.1.0 # firebase service
+jinja2==3.1.6 # template reading
+pydantic==2.11.9 # models & schemas
+python-dotenv==1.1.1 # .env reading
+uvicorn[standard]==0.37.0 # ASGI
