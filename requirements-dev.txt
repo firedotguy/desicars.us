@@ -4,4 +4,5 @@
 
 black==25.9.0 # code style
 pytest==8.4.2 # test
-ruff==0.13.2
+ruff==0.13.2 # code format
+rich==14.1.0 # colorful logs
