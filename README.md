@@ -22,8 +22,13 @@ pip install -r requirements.txt
 
 ## Configuration
 All configuration provides in `.env` file.
-| Name              | Description                                              | Type   | Example               |
-|-------------------|----------------------------------------------------------|--------|-----------------------|
-| `DEBUG`           | Enable debug mode                                        | bool   | `DEBUG = True`        |
-| `LOG_LEVEL`       | Logging level (`DEBUG`/`INFO`/`WARNING`/`ERROR`/`FATAL`) | str    | `LOG_LEVEL = INFO`    |
-| `LOG_COLORFUL`    | Enable colorful logs (requires `rich` to be installed)   | bool   | `LOG_COLORFUL = True` |
+| Name               | Description                                                       | Type       | Example                   |
+|--------------------|-------------------------------------------------------------------|------------|---------------------------|
+| `DEBUG`            | Enable debug mode                                                 | bool       | `DEBUG = True`            |
+| `LOG_LEVEL`        | Logging level (`DEBUG`/`INFO`/`WARNING`/`ERROR`/`FATAL`)          | str        | `LOG_LEVEL = INFO`        |
+| `LOG_COLORFUL`     | Enable colorful logs (requires `rich` to be installed)            | bool       | `LOG_COLORFUL = True`     |
+| `TARGET_CONTRACTS` | Currently active contracts for stats (`auto` - get from firebase) | str \| int | `TARGET_CONTRACTS = 100`  |
+| `TARGET_CLIENTS`   | Total clients served for stats (`auto` - get from firebase)       | str \| int | `TARGET_CLIENTS = 860`    |
+| `TARGET_CARS`      | Total cars in fleet for stats (`auto` - get from firebase)        | str \| int | `TARGET_CARS = 170`       |
+| `TAGET_NEW`        | New clients this month for stats (`auto` - get from firebase)     | str \| int | `TARGET_NEW = auto`       |
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>DesiCars</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap' rel='stylesheet'>
+
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        {% block header %}
+        <div id="header">
+            <div id="header-left">
+                <div id="header-logo">
+                    <img id="logo-img" src="{{ url_for('static', path='/images/logo-no-border.png') }}" alt="DesiCars logo">
+                    <span id="logo-name">DESI CARS</span>
+                </div>
+                <div id="header-tabs">
+                    <a href="" class="header-tab">Cars</a>
+                    <a href="" class="header-tab">Privacy &amp; Policy</a>
+                    <a href="" class="header-tab">Contact</a>
+                </div>
+            </div>
+            <div id="header-right">
+                <div id="header-location">
+                    <img id="header-location-icon" src="{{ url_for('static', path='/icons/location.svg') }}" alt="location">
+                    <span id="header-location-text">Dallas</span>
+                </div>
+                <a href=""><img id="header-favorite" src="{{ url_for('static', path='/icons/heart.svg') }}" alt="favorites"></a>
+                <span id="header-phone">+1 619 974 7568</span>
+            </div>
+        </div>
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+
+        {% block footer %}
+        Footer
+        {% endblock %}
+
+    </body>
+</html>

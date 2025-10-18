@@ -1,0 +1,161 @@
+* {
+  /* background-color: #141414; */
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-weight: 300;
+  line-height: 1;
+}
+
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: #141414;
+}
+
+
+button {
+  background-color: #353535cc;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: background-color, border-color;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+button:hover {
+  background-color: #ec5e1c;
+  border-color: #ec5e1c;
+}
+
+button:active {
+  background-color: #bc4d19;
+  border-color: #ec5e1c;
+}
+
+
+h2 {
+  color: #FF854D;
+  line-height: 37.8px;
+  font-size: 29px;
+  text-align: center;
+  font-weight: 200;
+}
+
+h3 {
+  color: #FF854D;
+  line-height: 37.8px;
+  font-size: 28.8px;
+  font-weight: 200;
+}
+
+
+
+#header {
+  height: 96px;
+  width: 100vw;
+  padding: 0 16% 0 10.5%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+
+  /* border-bottom: 1px solid #373737; */
+  background-color: transparent;
+  transition: background-color ease 0.3s;
+
+  position: absolute;
+  z-index: 3;
+}
+
+#header:hover {
+  background-color: #141414;
+  animation: header 0.2s linear;
+}
+
+#header-left {
+  display: flex;
+  align-items: center;
+}
+
+#header-right {
+  display: flex;
+  align-items: center;
+}
+
+
+#header-logo {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 22px;
+  padding-right: 15%;
+}
+
+#logo-img {
+  width: 82px;
+  height: auto;
+}
+
+#logo-name {
+  color: #ec5e1c;
+  font-weight: 700;
+  font-size: 25px;
+  white-space: nowrap;
+  line-height: 100%;
+}
+
+
+#header-tabs {
+  display: flex;
+  gap: 30px;
+  flex-wrap: nowrap;
+}
+
+.header-tab {
+  font-size: 16.9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 27px;
+  text-decoration: none !important;
+}
+
+
+#header-location {
+  display: flex;
+  vertical-align: middle;
+  gap: 10px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+#header-location-icon {
+  width: 16px;
+  height: 21px;
+}
+
+#header-location-text {
+  text-decoration: underline dashed #A5A5A5 1px;
+  line-height: 20px;
+}
+
+
+#header-favorite {
+  width: 27px;
+  height: 22px;
+  padding-left: 35%;
+}
+
+
+#header-phone {
+  flex-shrink: 0;
+  padding-left: 30%;
+  line-height: 27px;
+  font-weight: 400;
+  font-size: 15.2px;
+}

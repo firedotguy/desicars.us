@@ -1,10 +1,11 @@
-# app/utils/logger.py
-
 import logging
 import sys
 
+from fastapi.requests import Request
+from fastapi.responses import Response
+
 def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger:
-    level = (level or "INFO").upper()
+    level = level.upper()
 
     logger = logging.getLogger("desicars")
     logger.propagate = False
@@ -31,3 +32,15 @@ def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger
     logger.addHandler(handler)
 
     return logger
+
+def format_request(request: Request, response: Response) -> str:
+    if 200 <= response.status_code < 300:
+        color = "green"
+    elif 300 <= response.status_code < 400:
+        color = "yellow"
+    elif 400 <= response.status_code < 500:
+        color = "red"
+    else:
+        color = "bold red"
+
+    return f"{request.method} {request.url.path} -> [{color}]{response.status_code}"
