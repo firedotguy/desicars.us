@@ -31,4 +31,5 @@ All configuration provides in `.env` file.
 | `TARGET_CLIENTS`   | Total clients served for stats (`auto` - get from firebase)       | str \| int | `TARGET_CLIENTS = 860`    |
 | `TARGET_CARS`      | Total cars in fleet for stats (`auto` - get from firebase)        | str \| int | `TARGET_CARS = 170`       |
 | `TAGET_NEW`        | New clients this month for stats (`auto` - get from firebase)     | str \| int | `TARGET_NEW = auto`       |
+| `STATS_DURATION`   | Duration to statistic appear in milliseconds                      | int        | `STATS_DURATION = 1000`   |
 

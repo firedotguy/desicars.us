@@ -8,14 +8,14 @@ from fastapi.requests import Request
 from fastapi.responses import Response, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.utils.env import get_bool, get_str
+from app.utils.env import get_bool, get_str, get_int
 from app.utils.logger import setup_logging, format_request
 from app.routers.web import landing
 
 # get dotenv vars
-DEBUG = get_bool('DEBUG', False)
-LOG_LEVEL = get_str('LOG_LEVEL', 'DEBUG').upper()
-LOG_COLORFUL = get_bool('LOG_COLORFUL', DEBUG)
+DEBUG = get_bool("DEBUG", False)
+LOG_LEVEL = get_str("LOG_LEVEL", "DEBUG").upper()
+LOG_COLORFUL = get_bool("LOG_COLORFUL", DEBUG)
 
 # get base dir
 BASE_DIR = Path(__file__).resolve().parent
@@ -24,10 +24,20 @@ BASE_DIR = Path(__file__).resolve().parent
 logging.basicConfig(
     level=LOG_LEVEL,
     format="%(asctime)s [%(levelname)s]: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = setup_logging(LOG_LEVEL, LOG_COLORFUL)
-logger.debug('CONFIG: DEBUG=%s LOG_LEVEL=%s LOG_COLORFUL=%s', DEBUG, LOG_LEVEL, LOG_COLORFUL)
+logger.debug(
+    "CONFIG: DEBUG=%s LOG_LEVEL=%s LOG_COLORFUL=%s", DEBUG, LOG_LEVEL, LOG_COLORFUL
+)
+logger.debug(
+    "TARGET_CLIENTS=%s TARGET_CONTRACTS=%s TARGET_CARS=%s TARGET_NEW=%s STATS_DURATION=%s",
+    get_int("TARGET_CLIENTS", -1),
+    get_int("TARGET_CONTRACTS", -1),
+    get_int("TARGET_CARS", -1),
+    get_int("TARGET_NEW", -1),
+    get_int("STATS_DURATION", -1),
+)
 
 
 # lifespan (custom startup & shutdown logging)
@@ -39,26 +49,31 @@ async def lifespan(app: FastAPI):
     finally:
         logger.info("DesiCars server stopped")
 
+
 # create fastapi app
 app = FastAPI(
     debug=DEBUG,
-    title='DesiCars',
-    description='DesiCars - car rental company in Texas',
-    version='0.1.0',
-    lifespan=lifespan
+    title="DesiCars",
+    description="DesiCars - car rental company in Texas",
+    version="0.1.0",
+    lifespan=lifespan,
 )
 
+
 # middleware
-@app.middleware('http')
+@app.middleware("http")
 async def middleware(request: Request, call_next: Callable) -> Response:
     response: Response = await call_next(request)
     # custom access log
-    logger.info(format_request(request, response), extra={"highlighter": None}) # remove number highlighting
+    logger.info(
+        format_request(request, response), extra={"highlighter": None}
+    )  # remove number highlighting
     return response
 
 
 # mount static files for templates
-app.mount("/static", StaticFiles(directory=BASE_DIR / 'static'), name="static")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
 
 # favicon
 @app.get("/favicon.ico")

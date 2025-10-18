@@ -4,6 +4,7 @@ import sys
 from fastapi.requests import Request
 from fastapi.responses import Response
 
+
 def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger:
     level = level.upper()
 
@@ -15,10 +16,8 @@ def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger
 
     if colorful:
         from rich.logging import RichHandler
-        handler = RichHandler(
-            rich_tracebacks=True,
-            markup=True
-        )
+
+        handler = RichHandler(rich_tracebacks=True, markup=True)
         formatter = logging.Formatter("%(message)s")
     else:
         handler = logging.StreamHandler(stream=sys.stdout)
@@ -32,6 +31,7 @@ def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger
     logger.addHandler(handler)
 
     return logger
+
 
 def format_request(request: Request, response: Response) -> str:
     if 200 <= response.status_code < 300:
