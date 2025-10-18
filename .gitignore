@@ -13,6 +13,7 @@ __pycache__/
 .venv/
 venv/
 .vscode
+.ruff_cache/
 
 # Service account credentials
 *.json

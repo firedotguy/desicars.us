@@ -1,6 +1,5 @@
 from collections.abc import Callable
 from contextlib import asynccontextmanager
-import logging
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -21,11 +20,6 @@ LOG_COLORFUL = get_bool("LOG_COLORFUL", DEBUG)
 BASE_DIR = Path(__file__).resolve().parent
 
 # setup logger
-logging.basicConfig(
-    level=LOG_LEVEL,
-    format="%(asctime)s [%(levelname)s]: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
 logger = setup_logging(LOG_LEVEL, LOG_COLORFUL)
 logger.debug(
     "CONFIG: DEBUG=%s LOG_LEVEL=%s LOG_COLORFUL=%s", DEBUG, LOG_LEVEL, LOG_COLORFUL
