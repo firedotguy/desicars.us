@@ -20,7 +20,7 @@ logger = get_logger('firestore')
 @timed_log
 def fetch_cars_count() -> int:
     """Get all cars count."""
-    logger.debug('get cars count')
+    logger.debug('fetch cars count')
     result = db.collection("cars").count().get()
 
     assert isinstance(result, QueryResultsList), f"Unexpected type: {type(result)}"
@@ -32,7 +32,7 @@ def fetch_cars_count() -> int:
 @timed_log
 def fetch_active_contracts_count() -> int:
     """Get all active contract count (where active is True)."""
-    logger.debug('get active contracts count')
+    logger.debug('fetch active contracts count')
     result = db.collection('Contract').where(filter=FieldFilter('Active', '==', True)).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
@@ -42,7 +42,7 @@ def fetch_active_contracts_count() -> int:
 @timed_log
 def fetch_inactive_contracts_count() -> int:
     """Get all inactive contract count (where active is False)."""
-    logger.debug('get inactive contracts count')
+    logger.debug('fetch inactive contracts count')
     result = db.collection('Contract').where(filter=FieldFilter('Active', '==', False)).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
@@ -52,7 +52,7 @@ def fetch_inactive_contracts_count() -> int:
 @timed_log
 def fetch_new_contracts_count() -> int:
     """Get all new contracts count (created in last 31 days)."""
-    logger.debug('get new contracts count')
+    logger.debug('fetch new contracts count')
     result = db.collection('Contract').where(filter=FieldFilter('begin_time', '>', datetime.now() - timedelta(days=31))).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
@@ -61,12 +61,18 @@ def fetch_new_contracts_count() -> int:
 
 
 @timed_log
-def fetch_gasoline_cars(limit: int = 10) -> list[dict]:
-    """Get first N cars with gasoline line"""
-    logger.debug('get first %s gasoline cars', limit)
+def fetch_cars(type: str | None = None, limit: int | None = None) -> list[dict]:
+    """Get first N cars with type"""
+    logger.debug('fetch cars type=%s limit=%s', type or 'all', limit or 'no')
     cars: list[dict] = []
-    for car in db.collection('cars').where(filter=FieldFilter('type', '==', 'gasoline')).get():
+    query = db.collection('cars')
+    if type:
+        query = query.where(filter=FieldFilter('type', '==', type))
+    if limit:
+        query = query.limit(limit)
+
+    for car in query.get():
         cars.append(map_car(car.to_dict() or {}))
 
-    logger.timed_debug('fetched gasoline cars count: %s', len(cars))
+    logger.timed_debug('fetched cars count: %s', len(cars))
     return cars

@@ -1,7 +1,8 @@
-from logging import getLogger
 from dateutil.parser import parse
 
-logger = getLogger('desicars')
+from app.utils.logger import get_logger
+
+logger = get_logger()
 
 
 def _format_phone(data: str | None) -> int | None:
@@ -58,5 +59,56 @@ def map_car(data: dict) -> dict:
         'timestamps': {
             'registration_end': data.get('TO_end'),
             'last_seen': parse(data.get('last_seen', '2000-01-01 00:00:00'))
+        }
+    }
+
+
+def map_contract(data: dict) -> dict:
+    return {
+        'active': data.get('Active', False),
+        'start_odometer': data.get('Begin_odom'),
+        'payday_odometer': data.get('Payday_odom') or data.get('Begin_odom'),
+        'state': data.get('state', 'TX').upper(),
+
+        'name': data['ContractName'],
+        'nickname': data['nickname'],
+
+        'document_photos': data.get('DocumentPhoto', []),
+        'car_photos': data.get('car_photo', []),
+        'car_close_photos': data.get('photo_after_close'),
+
+        'price': round(data.get('daily_price', 0.0), 2),
+        'start_price': data.get('startPrice'),
+        'deposit': data.get('zalog') or data.get('deposit'),
+        'discount': data.get('discount_month', 0),
+        'promo_code': data.get('promoCode'),
+        'mil_limit': data.get('limit'),
+        'saldo': data.get('last_saldo', 0),
+
+        'renter': {
+            'name': data.get('renter'),
+            'phones': [_format_phone(phone) for phone in data['renternumber']],
+            'sms_block': data.get('sms_blocked', False),
+            'address': data.get('address'),
+            'email': data.get('email'),
+        },
+
+        'insurance': {
+            'company': data.get('insurance'),
+            'number': data.get('insurance_number'),
+            'expires_at': data.get('Insurance_end')
+        },
+
+        'license': {
+            'number': data.get('license'),
+            'expires_at': data.get('licenseDate')
+        },
+
+        'timestamps': {
+            'insurance_end': data.get('Insurance_end'),
+            'license_end': data.get('licenseData'),
+            'created_at': data.get('begin_time'),
+            'ended_at': data.get('end_time'),
+            'payday': data['pay_day'].day
         }
     }
