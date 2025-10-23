@@ -100,7 +100,8 @@
 
 .car-slider-container {
   position: relative;
-  width: 100%;
+  left: -140px;
+  width: 100vw;
   overflow: hidden;
 }
 
@@ -244,4 +245,48 @@
 .statistic.visible .statistic-value {
   opacity: 1;
   transform: translateY(0);
+}
+
+
+#reviews {
+  display: flex;
+  gap: 32px;
+  overflow: hidden;
+  width: 100vw;
+  background: #141414;
+  scroll-behavior: smooth;
+  position: relative;
+  left: -150px;
+}
+
+.review-card {
+  flex: 0 0 27%;
+  min-width: 300px;
+  background: #181818;
+  color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.review-name {
+  color: #ec5e1c;
+}
+
+.review-stars {
+  color: gold;
+}
+
+.review-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.9;
 }

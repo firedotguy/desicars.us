@@ -9,7 +9,8 @@ from fastapi.staticfiles import StaticFiles
 
 from app.utils.env import get_bool, get_str, get_int
 from app.utils.logger import setup_logging, format_request
-from app.routers.web import landing
+from app.routers.web import router as web_router
+from app.routers.api import router as api_router
 
 # get dotenv vars
 DEBUG = get_bool("DEBUG", False)
@@ -75,4 +76,5 @@ async def favicon():
     return FileResponse("app/static/favicon.ico")
 
 
-app.include_router(landing.router)
+app.include_router(web_router)
+app.include_router(api_router)

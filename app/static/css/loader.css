@@ -1,0 +1,68 @@
+#loader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+body.loading #loader {
+  display: flex;
+  opacity: 1;
+}
+
+body:not(.loading) #loader {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.loading > *:not(#loader) {
+  display: none !important;
+}
+
+body:not(.loading) > *:not(#loader) {
+  animation: fadeInContent 0.8s ease forwards;
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Сам лоадер */
+.loader-ring {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.loader-logo {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader-ring::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(236, 94, 28, 0.2);
+  border-top-color: #ec5e1c;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}

@@ -15,8 +15,8 @@
         <div id="header">
             <div id="header-left">
                 <div id="header-logo">
-                    <img id="logo-img" src="{{ url_for('static', path='/images/logo-no-border.png') }}" alt="DesiCars logo">
-                    <span id="logo-name">DESI CARS</span>
+                    <img id="header-logo-icon" src="{{ url_for('static', path='/images/logo-no-border.png') }}" alt="DesiCars logo">
+                    <span id="header-logo-name">DESI CARS</span>
                 </div>
                 <div id="header-tabs">
                     <a href="" class="header-tab">Cars</a>
@@ -38,7 +38,54 @@
         {% block content %}{% endblock %}
 
         {% block footer %}
-        Footer
+        <div id="footer">
+            <div id="footer-logo">
+                <img id="footer-logo-icon" src="{{ url_for('static', path='/images/logo-no-border.png') }}" alt="DesiCars logo">
+                <span id="footer-logo-name">DESI CARS</span>
+            </div>
+            <div id="footer-section">
+                <div id="footer-section-title">Sections</div>
+                <div id="footer-section-values">
+                    <div class="footer-section-value">Cars</div>
+                    <div class="footer-section-value">Contact</div>
+                    <div class="footer-section-value">Privacy &amp; policy</div>
+                </div>
+            </div>
+            <div id="footer-contact">
+                <div id="footer-contact-title">Contacts</div>
+                <div id="footer-contact-values">
+                    <div class="footer-contact-value">
+                        <img id="footer-contact-value-icon" src="{{ url_for('static', path='/icons/location-outline.svg')}}">
+                        <span id="footer-contact-value-name">2636 Walnut Hill Ln, Suite 311, Dallas, TX 75229</span>
+                    </div>
+                    <div class="footer-contact-value">
+                        <img id="footer-contact-value-icon" src="{{ url_for('static', path='/icons/phone.svg')}}">
+                        <span id="footer-contact-value-name">+1 619 974 7568</span>
+                    </div>
+                    <div class="footer-contact-value">
+                        <img id="footer-contact-value-icon" src="{{ url_for('static', path='/icons/email.svg')}}">
+                        <span id="footer-contact-value-name">cccorp89@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <div id="footer-social">
+                <div id="footer-social-title">Socials</div>
+                <div id="footer-social-values">
+                    <div class="footer-social-value">
+                        <img id="footer-social-value-icon" src="{{ url_for('static', path='/icons/socials/instagram.svg')}}">
+                        <span id="footer-social-value-name">Instagram</span>
+                    </div>
+                    <div class="footer-social-value">
+                        <img id="footer-social-value-icon" src="{{ url_for('static', path='/icons/socials/telegram.svg')}}">
+                        <span id="footer-social-value-name">Telegram</span>
+                    </div>
+                    <div class="footer-social-value">
+                        <img id="footer-social-value-icon" src="{{ url_for('static', path='/icons/socials/whatsapp.svg')}}">
+                        <span id="footer-social-value-name">Whatsapp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endblock %}
 
     </body>
