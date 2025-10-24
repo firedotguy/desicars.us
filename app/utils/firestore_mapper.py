@@ -35,27 +35,36 @@ def map_car(data: dict) -> dict:
             'start': data.get('OilChange_Start'),
             'end': data.get('OilChange_End')
         },
+
         'nickname': data['nickname'],
         'odometer': data['odometer'],
+
         'vehicle': {
             'color': data.get('color'),
             'make': data.get('make') or data.get('vehicle'),
             'model': data.get('model'),
             'year': data.get('year') or int(data.get('year_string', '0')),
-            'name': f'{data["make"] or data["vehicle"]} {data["model"]}' if 'model' in data and 'make' in data or 'vehicle' in data else None
+            'name': f'{data["make"] or data["vehicle"]} {data["model"]}' if 'model' in data and 'make' in data or 'vehicle' in data else None,
+            'type': data.get('type')
         },
         'tolltag': data.get('toltag', '').lstrip('NTTA'),
         'vin': data.get('vin'),
         'plate': _format_plate(data.get('plate', '')),
-        'price': data.get('def_price'),
         'imei': int(data.get('device_imei', '0')),
         'engine': float(data.get('engine', '0L').rstrip('L')),
         'fuel': round(float(data.get('fuel', 0.0)), 2),
+
+        'renter': data.get('curren_renter'),
+        'price': data.get('def_price'),
+        'status': _format_status(data['status']),
+
         'relay_id': data.get('idRelay'),
         'relay_block': data.get('relayBlocked', False),
         'gps_phone': _format_phone(data.get('gpsTrackerPhone')),
+
+        'web_photos': data.get('photo_website', []),
         'photos': data.get('photo_album', []),
-        'status': _format_status(data['status']),
+
         'timestamps': {
             'registration_end': data.get('TO_end'),
             'last_seen': parse(data.get('last_seen', '2000-01-01 00:00:00'))

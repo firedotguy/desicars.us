@@ -25,9 +25,14 @@
                 </div>
             </div>
             <div id="header-right">
-                <div id="header-location">
-                    <img id="header-location-icon" src="{{ url_for('static', path='/icons/location.svg') }}" alt="location">
-                    <span id="header-location-text">Dallas</span>
+                <div id="header-city">
+                    <img id="header-city-icon" src="{{ url_for('static', path='/icons/location.svg') }}" alt="location">
+                    <span id="header-city-name">Dallas</span>
+                    <div id="header-city-dropdown">
+                        <div id="header-city-dropdown-current" class="header-city-dropdown-item">Dallas</div>
+                        <div class="header-city-dropdown-item header-city-dropdown-item-disabled">Austin</div>
+                        <div class="header-city-dropdown-item header-city-dropdown-item-disabled">Fort Worth</div>
+                    </div>
                 </div>
                 <a href=""><img id="header-favorite" src="{{ url_for('static', path='/icons/heart.svg') }}" alt="favorites"></a>
                 <span id="header-phone">+1 619 974 7568</span>

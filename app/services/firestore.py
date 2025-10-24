@@ -61,13 +61,15 @@ def fetch_new_contracts_count() -> int:
 
 
 @timed_log
-def fetch_cars(type: str | None = None, limit: int | None = None) -> list[dict]:
+def fetch_cars(type: str | None = None, limit: int | None = None, active: bool | None = None) -> list[dict]:
     """Get first N cars with type"""
-    logger.debug('fetch cars type=%s limit=%s', type or 'all', limit or 'no')
+    logger.debug('fetch cars type=%s status=%s limit=%s', type or 'all', 'free' if active is True else 'rent' if active is False else 'all', limit or 'no')
     cars: list[dict] = []
     query = db.collection('cars')
     if type:
         query = query.where(filter=FieldFilter('type', '==', type))
+    if active:
+        query = query.where(filter=FieldFilter('status', 'in', ('Свободна', 'свободна', 'Free', 'free') if active else ('Занята', 'занята', 'rent', 'Rent')))
     if limit:
         query = query.limit(limit)
 
