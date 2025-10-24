@@ -21,7 +21,6 @@ environ["GRPC_LOG_SEVERITY_LEVEL"] = "ERROR"
 
 
 class ShortNameFormatter(logging.Formatter):
-    """Форматтер: показывает имя логгера только если оно не 'desicars'."""
     def format(self, record):
         if record.name == "desicars":
             record.display_name = ""
@@ -78,6 +77,7 @@ def format_request(request: Request, response: Response) -> str:
 
 class TimedLogger(logging.Logger):
     """Custom logger class supporting timed_debug()."""
+
     _last_msg: tuple[str, int, tuple, dict] | None = None
 
     def timed_debug(self, msg: str, *args, **kwargs) -> None:
@@ -86,7 +86,7 @@ class TimedLogger(logging.Logger):
 
 def get_logger(name: str | None = None) -> TimedLogger:
     """Get currecnt logger and add support for timed_log decorator to it."""
-    prefix = 'desicars'
+    prefix = "desicars"
     base_logger = logging.getLogger(f"{prefix}.{name}" if name else prefix)
 
     base_logger.__class__ = TimedLogger
@@ -96,6 +96,7 @@ def get_logger(name: str | None = None) -> TimedLogger:
 
 def timed_log(fn):
     """Decorator that adds time taken to process command to last debug log message."""
+
     @wraps(fn)
     def wrapper(*args, **kwargs):
         logger = logging.getLogger("desicars.firestore")
@@ -109,4 +110,5 @@ def timed_log(fn):
             logger.debug(f"{msg} ({duration:.2f} ms)", *args_, **kwargs_)
             delattr(logger, "_last_msg")
         return result
+
     return wrapper

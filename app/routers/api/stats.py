@@ -1,11 +1,16 @@
 from fastapi import APIRouter
-from app.services.firestore import fetch_active_contracts_count, fetch_cars_count, fetch_inactive_contracts_count, fetch_new_contracts_count
+from app.services.firestore import (
+    fetch_active_contracts_count,
+    fetch_cars_count,
+    fetch_inactive_contracts_count,
+    fetch_new_contracts_count,
+)
 from app.utils.env import get_int
-
 
 router = APIRouter()
 
-@router.get('')
+
+@router.get("")
 def api_get_stats():
     if get_int("TARGET_CONTRACTS", -1) == -1:
         contracts = fetch_active_contracts_count()
@@ -28,9 +33,9 @@ def api_get_stats():
         new = get_int("TARGET_NEW", 50)
 
     return {
-        'status': 'success',
-        'cars': cars,
-        'contracts': contracts,
-        'clients': clients,
-        'new': new
+        "status": "success",
+        "cars": cars,
+        "contracts": contracts,
+        "clients": clients,
+        "new": new,
     }

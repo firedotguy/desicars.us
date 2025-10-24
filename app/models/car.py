@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class VehicleInfo(BaseModel):
     color: str | None
     make: str | None
     model: str | None
     year: int | None
     name: str | None
+
 
 class Car(BaseModel):
     nickname: str

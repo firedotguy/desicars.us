@@ -32,7 +32,6 @@ body:not(.loading) > *:not(#loader) {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Сам лоадер */
 .loader-ring {
   position: relative;
   width: 100px;
