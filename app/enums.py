@@ -1,16 +1,25 @@
 from enum import Enum
 
+
 class CarType(Enum):
-    GASOLINE = 'gasoline'
-    HYBRID = 'hybrid'
-    MINIVAN = 'minivan'
+    GASOLINE = "gasoline"
+    HYBRID = "hybrid"
+    MINIVAN = "minivan"
+
 
 class CarColor(Enum):
-    BLACK = 'black'
-    WHITE = 'white'
-    SILVER = 'silver'
-    RED = 'red'
-    GREEN = 'green'
-    GRAY = 'gray'
-    BLUE = 'blue'
-    GOLD = 'gold'
+    BLACK = "black"
+    WHITE = "white"
+    SILVER = "silver"
+    RED = "red"
+    GREEN = "green"
+    GRAY = "gray"
+    BLUE = "blue"
+    GOLD = "gold"
+
+
+class CarStatus(Enum):
+    FREE = "free"
+    RENT = "rent"
+    CRASH = "crash"
+    ARCHIVE = "archive"

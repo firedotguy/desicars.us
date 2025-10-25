@@ -11,6 +11,8 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 
 from app.utils.firestore_mapper import map_car
 from app.utils.logger import get_logger, timed_log
+from app.enums import CarType
+from app.schemas.car import CarSchema
 
 initialize_app(Certificate("key.json"))
 db: Client = client()
@@ -82,36 +84,50 @@ def fetch_new_contracts_count() -> int:
 
 @timed_log
 def fetch_cars(
-    type: str | None = None, limit: int | None = None, active: bool | None = None
-) -> list[dict]:
-    """Get first N cars with type"""
+    type: CarType | None = None, active: bool | None = None, limit: int | None = None
+) -> list[CarSchema]:
+    """Fetch cars data"""
     logger.debug(
         "fetch cars type=%s status=%s limit=%s",
-        type or "all",
-        "free" if active is True else "rent" if active is False else "all",
+        type.value if type else "all",
+        "free" if active is False else "rent" if active is True else "all",
         limit or "no",
     )
-    cars: list[dict] = []
+    cars: list[CarSchema] = []
     query = db.collection("cars")
     if type:
-        query = query.where(filter=FieldFilter("type", "==", type))
-    if active:
+        query = query.where(filter=FieldFilter("type", "==", type.value))
+    if active is not None:  # if false, do not passing, so checking only on None
         query = query.where(
             filter=FieldFilter(
                 "status",
                 "in",
-                (
-                    ("Свободна", "свободна", "Free", "free")
-                    if active
-                    else ("Занята", "занята", "rent", "Rent")
-                ),
+                ("Занята", "занята", "Аренда", "аренда", "rent", "Rent")
+                if active
+                else ("Свободна", "свободна", "Free", "free"),
             )
         )
     if limit:
         query = query.limit(limit)
 
-    for car in query.get():
+    for car in query.stream():
         cars.append(map_car(car.to_dict() or {}))
 
     logger.timed_debug("fetched cars count: %s", len(cars))
     return cars
+
+
+@timed_log
+def fetch_car(nickname: str) -> CarSchema | None:
+    """Fetch car by nickname."""
+    logger.debug("fetch car nickname=%s", nickname)
+    car = (
+        db.collection("cars")
+        .where(filter=FieldFilter("nickname", "==", nickname))
+        .get()
+    )
+    if not car:
+        logger.timed_debug("car not found")
+        return
+    logger.timed_debug("fetched car")
+    return map_car(car[0].to_dict() or {})

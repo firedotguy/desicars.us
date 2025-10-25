@@ -1,0 +1,38 @@
+from typing import Optional, List, Dict
+from pydantic import BaseModel, Field
+from app.enums import CarColor, CarType, CarStatus
+
+
+class Vehicle(BaseModel):
+    color: Optional[CarColor] = None
+    make: Optional[str] = None
+    model: Optional[str] = None
+    year: Optional[int] = None
+    name: Optional[str] = None
+    type: Optional[CarType] = None
+
+
+class CarSchema(BaseModel):
+    nickname: str
+    vehicle: Vehicle
+
+    # changeoil: dict = {}
+    # odometer: int = 0
+    plate: Optional[str] = None
+    # vin: str
+    engine: Optional[str] = None
+    fuel: float = 0.0
+    # renter: Optional[str] = None
+    price: Optional[float] = None
+    status: CarStatus = CarStatus.FREE
+    # relay_id: Optional[str] = None
+    # relay_block: Optional[bool] = None
+    # gps_phone: Optional[int] = None
+    photos: List[str] = []
+    web_photos: List[str] = []
+    # tolltag: Optional[str] = None
+    # imei: Optional[int] = None
+    # timestamps: dict = {}
+
+    class Config:
+        from_attributes = True
