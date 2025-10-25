@@ -1,6 +1,7 @@
 from dateutil.parser import parse
 
 from app.utils.logger import get_logger
+from app.enums import CarColor, CarType
 
 logger = get_logger()
 
@@ -28,8 +29,29 @@ def _format_status(data: str) -> str:
         return "rent"
     if data in ("archive", "архив"):
         return "archive"
-    logger.warning("found unparseable status: %s", data)
+    logger.warning("found unparseable car status: %s", data)
     return "none"
+
+
+def _format_type(data: str | None) -> CarType | None:
+    if data is None:
+        return
+
+    try:
+        return CarType(data.strip().lower())
+    except ValueError:
+        logger.warning('found unparseable car type: %s', data)
+        return
+
+def _format_color(data: str | None) -> CarColor | None:
+    if data is None:
+        return
+
+    try:
+        return CarColor(data.strip().lower())
+    except ValueError:
+        logger.warning('found unparseable car color: %s', data)
+        return
 
 
 def map_car(data: dict) -> dict:
@@ -41,7 +63,7 @@ def map_car(data: dict) -> dict:
         "nickname": data["nickname"],
         "odometer": data["odometer"],
         "vehicle": {
-            "color": data.get("color"),
+            "color": _format_color(data.get("color")),
             "make": data.get("make") or data.get("vehicle"),
             "model": data.get("model"),
             "year": data.get("year") or int(data.get("year_string", "0")),
@@ -50,7 +72,7 @@ def map_car(data: dict) -> dict:
                 if "model" in data and "make" in data or "vehicle" in data
                 else None
             ),
-            "type": data.get("type"),
+            "type": _format_type(data.get("type")),
         },
         "tolltag": data.get("toltag", "").lstrip("NTTA"),
         "vin": data.get("vin"),
@@ -81,9 +103,11 @@ def map_contract(data: dict) -> dict:
         "state": data.get("state", "TX").upper(),
         "name": data["ContractName"],
         "nickname": data["nickname"],
+
         "document_photos": data.get("DocumentPhoto", []),
         "car_photos": data.get("car_photo", []),
         "car_close_photos": data.get("photo_after_close"),
+
         "price": round(data.get("daily_price", 0.0), 2),
         "start_price": data.get("startPrice"),
         "deposit": data.get("zalog") or data.get("deposit"),
@@ -91,6 +115,7 @@ def map_contract(data: dict) -> dict:
         "promo_code": data.get("promoCode"),
         "mil_limit": data.get("limit"),
         "saldo": data.get("last_saldo", 0),
+
         "renter": {
             "name": data.get("renter"),
             "phones": [_format_phone(phone) for phone in data["renternumber"]],
@@ -98,6 +123,7 @@ def map_contract(data: dict) -> dict:
             "address": data.get("address"),
             "email": data.get("email"),
         },
+
         "insurance": {
             "company": data.get("insurance"),
             "number": data.get("insurance_number"),
