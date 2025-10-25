@@ -2,10 +2,32 @@
 
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/cars.css')}}">
 {% endblock %}
 
 
 {% block content %}
 {% include "loader.html" %}
+<img id="banner" src="{{ url_for('static', path='/images/cars-banner.png') }}">
+
+<div id="content">
+    <h2>Cars</h2>
+
+    <div id="filters">
+        <div class="filter">
+            <span class="filter-name">Type</span>
+            <img class="filter-icon" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+        </div>
+        <div class="filter">
+            <span class="filter-name">Make</span>
+            <img class="filter-icon" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+        </div>
+        <div class="filter">
+            <span class="filter-name">Price</span>
+            <img class="filter-icon" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+        </div>
+
+    </div>
+</div>
 
 {% endblock %}

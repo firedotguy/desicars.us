@@ -1,0 +1,32 @@
+#content{
+  padding: 0 1% 0 1%;
+}
+
+#banner {
+  height: auto;
+  width: 100vw;
+
+  padding-bottom: 10px;
+}
+
+
+#filters {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+
+  margin: 50px 0 20px 0;
+}
+
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background-color: #232323;
+  border-radius: 5px;
+  padding: 8px 20px;
+}
+
