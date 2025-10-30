@@ -170,14 +170,16 @@ a:active {
 #header-city-dropdown {
   display: none;
   flex-direction: column;
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
+
   background: #0f0f0ffa;
   border: 1px solid #222;
   box-shadow: 0 5px 15px #00000066;
   border-radius: 6px;
   padding: 10px 15px;
+
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
   z-index: 3;
   animation: fadeIn 0.2s ease;
   min-width: 140px;

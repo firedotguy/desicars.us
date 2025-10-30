@@ -2,8 +2,13 @@
 
 
 {% block head %}
+<!-- css -->
 <link rel="stylesheet" href="{{ url_for('static', path='/css/cars.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/rangeslider.css') }}">
+
+<!-- js -->
 <script src="{{ url_for('static', path='/js/cars.js') }}"></script>
+<script src="{{ url_for('static', path='/js/rangeslider.min.js') }}"></script>
 {% endblock %}
 
 
@@ -53,21 +58,17 @@
                 <div id="filter-price-inputs">
                     <div class="filter-price-field">
                     <span class="filter-price-label">From</span>
-                    <input id="filter-price-min-input" type="number" min="0" max="1000" value="200">
+                    <input id="filter-price-min-input" value="0">
                     <span class="filter-price-currency">$</span>
                     </div>
                     <div class="filter-price-field">
                     <span class="filter-price-label">To</span>
-                    <input id="filter-price-max-input" type="number" min="0" max="1000" value="800">
+                    <input id="filter-price-max-input" value="1000">
                     <span class="filter-price-currency">$</span>
                     </div>
                 </div>
 
-                <div id="filter-price-slider">
-                    <div id="filter-price-track"></div>
-                    <input type="range" id="filter-price-range-min" min="0" max="1000" value="100" step="10">
-                    <input type="range" id="filter-price-range-max" min="0" max="1000" value="900" step="10">
-                </div>
+                <input type="text" id="filter-price-slider" name="filter-price" value="" />
             </div>
         </div>
 
