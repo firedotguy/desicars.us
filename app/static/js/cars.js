@@ -1,10 +1,12 @@
-const RANGESLIDER_MIN_SPACING = 20;
+﻿const RANGESLIDER_MIN_SPACING = 20;
 const RANGESLIDER_MIN_VALUE = 0;
 const RANGESLIDER_MAX_VALUE = 1000;
 
 // filter show/hide
 document.addEventListener("DOMContentLoaded", () => {
   const filters = document.querySelectorAll(".filter");
+  // Keep a reference to the price slider instance (vanilla-rangeslider)
+  let priceSlider = null;
 
   filters.forEach((filter) => {
     const dropdown = filter.querySelector(".filter-dropdown");
@@ -15,6 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (f !== filter) f.classList.remove("active");
       });
       filter.classList.toggle("active");
+
+      // If opening Price dropdown, sync slider from inputs (empty -> 0)
+      if (filter.id === 'filter-price' && filter.classList.contains('active')) {
+        const minInput = document.getElementById('filter-price-min-input');
+        const maxInput = document.getElementById('filter-price-max-input');
+        if (minInput && maxInput && priceSlider && typeof priceSlider.update === 'function') {
+          if (minInput.value === '') minInput.value = '0';
+          if (maxInput.value === '') maxInput.value = '0';
+          priceSlider.update({ from: +minInput.value, to: +maxInput.value });
+        }
+      }
     });
 
     if (dropdown) {
@@ -67,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
   });
+  priceSlider = slider;
 
   minInput.addEventListener("change", () => {
     minInput.value = minInput.value.replace(/\D/g, '');
@@ -108,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const listEl = document.getElementById("cars-list");
   const DEFAULT_MIN = RANGESLIDER_MIN_VALUE;
   const DEFAULT_MAX = RANGESLIDER_MAX_VALUE;
+  let firstLoad = true;
 
   const getParams = () => new URLSearchParams(window.location.search);
   const setParam = (key, value) => {
@@ -180,19 +195,42 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.style.display = visible ? 'flex' : 'none';
   };
 
+  const inlineLoader = document.getElementById('inline-loader');
+
+const showInlineLoader = () => {
+  if (inlineLoader) inlineLoader.hidden = false;
+  if (listEl) listEl.innerHTML = '';
+};
+const hideInlineLoader = () => {
+  if (inlineLoader) inlineLoader.hidden = true;
+};
+
   const loadCars = (params = getParams()) => {
     const p = new URLSearchParams(params);
     if (!p.has('active')) p.set('active', 'false');
     const qs = p.toString();
-    setLoaderVisible(true);
+
+    if (firstLoad) {
+      setLoaderVisible(true);
+    } else {
+      showInlineLoader();
+    }
     fetch(`/api/cars${qs ? `?${qs}` : ""}`)
       .then((r) => r.json())
       .then((data) => renderCars(data))
       .catch(() => {
         if (listEl) listEl.innerHTML = '<div id="cars-error">Failed to load cars</div>';
       })
-      .finally(() => setLoaderVisible(false));
+      .finally(() => {
+        if (firstLoad) {
+          setLoaderVisible(false);
+          firstLoad = false;
+        } else {
+          hideInlineLoader();
+        }
+      });
   };
+
 
   // Sync price UI from URL params on load/popstate
   const syncPriceUIFromParams = (params) => {
@@ -203,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sliderInput = document.getElementById("filter-price-slider");
     if (minInput) minInput.value = `${min}`;
     if (maxInput) maxInput.value = `${max}`;
-    if (sliderInput && sliderInput.rangeSlider) sliderInput.rangeSlider.update({ from: min, to: max });
+    if (priceSlider && typeof priceSlider.update === 'function') { priceSlider.update({ from: min, to: max }); }
   };
 
   // Click handlers for dropdown items
@@ -269,6 +307,14 @@ document.addEventListener("DOMContentLoaded", () => {
     params.delete('price_min');
     params.delete('price_max');
     history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+    // Reset inputs and slider to defaults explicitly
+    const minInputEl = document.getElementById('filter-price-min-input');
+    const maxInputEl = document.getElementById('filter-price-max-input');
+    if (minInputEl) minInputEl.value = `${DEFAULT_MIN}`;
+    if (maxInputEl) maxInputEl.value = `${DEFAULT_MAX}`;
+    if (priceSlider && typeof priceSlider.update === 'function') {
+      priceSlider.update({ from: DEFAULT_MIN, to: DEFAULT_MAX });
+    }
     syncPriceUIFromParams(params);
     toggleCancelButtons(params);
     updateCurrentClasses(params);
@@ -289,3 +335,4 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCars(getParams());
   });
 });
+

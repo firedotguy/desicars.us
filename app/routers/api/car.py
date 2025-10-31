@@ -15,10 +15,12 @@ def api_get_cars(
     active: Optional[bool] = Query(None, description="Filter by status: True=rent, False=free"),
     make: Optional[CarMake] = Query(None, description='Filter by car make/vehicle'),
     sort: CarSorting = Query(CarSorting.MODEL, description='Sorting type - year/price-asc/price-desc/model'),
+    price_min: Optional[int] = Query(None, description='Minimal default month price'),
+    price_max: Optional[int] = Query(None, description='Maxmial default month price'),
     limit: Optional[int] = Query(None, description="Limit number of results"),
 ):
     """Return list of cars with optional filters."""
-    cars: List[Car] = fetch_cars(type=type, active=active, make=make, sort=sort, limit=limit)
+    cars: List[Car] = fetch_cars(type=type, active=active, make=make, price_min=price_min, price_max=price_max, sort=sort, limit=limit)
     return cars
 
 
