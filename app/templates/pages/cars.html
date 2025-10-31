@@ -68,11 +68,20 @@
                     </div>
                 </div>
 
-                <input type="text" id="filter-price-slider" name="filter-price" value="" />
+                <input type="text" id="filter-price-slider" name="filter-price" value="">
             </div>
         </div>
 
-        <img class="filter" id="sort" src="{{ url_for('static', path='/icons/sort.svg') }}">
+        <div class="filter" id="filter-sort">
+            <img src="{{ url_for('static', path='/icons/sort.svg') }}">
+            <div class="filter-dropdown">
+                <a href="#" class="filter-dropdown-item">By model</a>
+                <a href="#" class="filter-dropdown-item">By price (first low-price)</a>
+                <a href="#" class="filter-dropdown-item">By price (first high-price)</a>
+                <a href="#" class="filter-dropdown-item">By year</a>
+
+            </div>
+        </div>
     </div>
 
 </div>
