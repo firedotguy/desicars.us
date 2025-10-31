@@ -12,7 +12,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from app.utils.firestore_mapper import map_car
 from app.utils.logger import get_logger, timed_log
 from app.enums import CarType
-from app.schemas.car import CarSchema
+from app.schemas.car import Car
 
 initialize_app(Certificate("key.json"))
 db: Client = client()
@@ -85,7 +85,7 @@ def fetch_new_contracts_count() -> int:
 @timed_log
 def fetch_cars(
     type: CarType | None = None, active: bool | None = None, limit: int | None = None
-) -> list[CarSchema]:
+) -> list[Car]:
     """Fetch cars data"""
     logger.debug(
         "fetch cars type=%s status=%s limit=%s",
@@ -93,7 +93,7 @@ def fetch_cars(
         "free" if active is False else "rent" if active is True else "all",
         limit or "no",
     )
-    cars: list[CarSchema] = []
+    cars: list[Car] = []
     query = db.collection("cars")
     if type:
         query = query.where(filter=FieldFilter("type", "==", type.value))
@@ -118,7 +118,7 @@ def fetch_cars(
 
 
 @timed_log
-def fetch_car(nickname: str) -> CarSchema | None:
+def fetch_car(nickname: str) -> Car | None:
     """Fetch car by nickname."""
     logger.debug("fetch car nickname=%s", nickname)
     car = (

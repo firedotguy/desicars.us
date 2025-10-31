@@ -1,6 +1,6 @@
 from app.utils.logger import get_logger
 from app.enums import CarColor, CarType, CarStatus
-from app.schemas.car import CarSchema, Vehicle
+from app.schemas.car import Car, Vehicle
 from app.schemas.contract import ContractSchema
 
 logger = get_logger("firestore_mapper")
@@ -68,9 +68,9 @@ def _safe_title(value: str | None) -> str | None:
     return str(value).title()
 
 
-def map_car(data: dict) -> CarSchema:
-    """Map Firestore car document → Pydantic CarSchema"""
-    return CarSchema(
+def map_car(data: dict) -> Car:
+    """Map Firestore car document → Pydantic Car"""
+    return Car(
         # changeoil={
         #     "start": data.get("OilChange_Start"),
         #     "end": data.get("OilChange_End"),

@@ -12,7 +12,7 @@ class Vehicle(BaseModel):
     type: Optional[CarType] = None
 
 
-class CarSchema(BaseModel):
+class Car(BaseModel):
     nickname: str
     vehicle: Vehicle
 
