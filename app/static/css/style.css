@@ -110,6 +110,7 @@ a:active {
   box-sizing: border-box;
   gap: 22px;
   padding-right: 15%;
+  cursor: pointer;
 }
 
 #header-logo-icon, #footer-logo-icon {
@@ -273,6 +274,7 @@ a:active {
   align-items: center;
   padding-right: 5%;
   gap: 12px;
+  cursor: pointer;
 }
 
 
