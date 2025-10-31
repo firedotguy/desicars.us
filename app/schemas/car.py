@@ -1,11 +1,11 @@
-from typing import Optional, List, Dict
-from pydantic import BaseModel, Field
-from app.enums import CarColor, CarType, CarStatus
+from typing import Optional, List
+from pydantic import BaseModel
+from app.enums import CarColor, CarType, CarStatus, CarMake
 
 
 class Vehicle(BaseModel):
     color: Optional[CarColor] = None
-    make: Optional[str] = None
+    make: Optional[CarMake] = None
     model: Optional[str] = None
     year: Optional[int] = None
     name: Optional[str] = None

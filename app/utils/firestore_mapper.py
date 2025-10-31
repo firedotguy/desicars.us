@@ -1,5 +1,5 @@
 from app.utils.logger import get_logger
-from app.enums import CarColor, CarType, CarStatus
+from app.enums import CarColor, CarType, CarStatus, CarMake
 from app.schemas.car import Car, Vehicle
 from app.schemas.contract import ContractSchema
 
@@ -61,6 +61,17 @@ def _format_color(data: str | None) -> CarColor | None:
         logger.warning("found unparseable car color: %s", data)
         return
 
+def _format_make(data: str | None) -> CarMake | None:
+    if not data:
+        return
+    if data.lower() == "kia":
+        return CarMake.KIA
+
+    try:
+        return CarMake(data.title())
+    except ValueError:
+        logger.warning("found unparseable car make: %s", data)
+
 
 def _safe_title(value: str | None) -> str | None:
     if not value or not str(value).strip():
@@ -79,7 +90,7 @@ def map_car(data: dict) -> Car:
         # odometer=data.get("odometer"),
         vehicle=Vehicle(
             color=_format_color(data.get("color")),
-            make=_safe_title(data.get("make") or data.get("vehicle")),
+            make=_format_make(data.get("make") or data.get("vehicle")),
             model=_safe_title(data.get("model")),
             year=(data.get("year") or int(data.get("year_string", "0"))) or None,
             name=(

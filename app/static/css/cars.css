@@ -17,7 +17,7 @@
   flex-direction: row;
   gap: 15px;
 
-  margin: 50px 0 200px 0;
+  margin: 50px 0 20px 0;
 }
 
 .filter {
@@ -91,10 +91,13 @@
 
   padding: 6px 0;
 }
-
 .filter-dropdown-item:hover {
   color: #EB5E1B;
   transform: translateX(4px);
+}
+
+.filter-dropdown-item-current {
+  color: #FF854D;
 }
 
 @keyframes fadeIn {
@@ -103,12 +106,12 @@
 }
 
 /* filters/price */
-#filter-price {
-  width: 260px;
+/* #filter-price {
+  width: 140px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 15px;
-}
+} */
 
 #filter-price-inputs {
   display: flex;
@@ -185,4 +188,28 @@
 #filter-price-slider {
   width: 240px;
   margin-top: 10px;
+}
+
+#filter-price-button {
+  align-self: self-end;
+  width: 100px;
+}
+
+
+#cars-error {
+  color: #f0360d;
+  text-align: center;
+  padding: 10px 0;
+}
+
+#cars-not-found {
+  color: #666;
+  text-align: center;
+  padding: 10px 0;
+}
+.cars-inline-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
 }

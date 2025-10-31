@@ -193,9 +193,12 @@ a:active {
   font-size: 15px;
   transition: color 0.2s ease, transform 0.15s ease;
 }
+#header-city-dropdown-current {
+  color: #FF854D;
+}
 
 .header-city-dropdown-item:hover {
-  color: #EB5E1B;
+  color: #EB5E1B !important;
   transform: translateX(4px);
 }
 

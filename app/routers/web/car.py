@@ -10,7 +10,22 @@ templates = Jinja2Templates(directory="app/templates/")
 
 @router.get("/cars", response_class=HTMLResponse)
 def get_cars(request: Request):
-    return templates.TemplateResponse(request, "pages/cars.html", {})
+    # Render page; client JS fetches cars and applies filters.
+    qp = request.query_params
+    context = {
+        "request": request,
+        # Provide filters for template conditionals (safe defaults)
+        "filters": {
+            "type": qp.get("type"),
+            "make": qp.get("make"),
+            "price": {
+                'min': qp.get('price_min', 0),
+                'max': qp.get('price_max', 1000)
+            },
+            "sort": qp.get("sort")
+        }
+    }
+    return templates.TemplateResponse(request, "pages/cars.html", context)
 
 
 @router.get("/car", response_class=HTMLResponse)  # redirect to /cars page
