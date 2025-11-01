@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<!-- css -->
+<link rel="stylesheet" href="{{ url_for('static', path='/css/cars.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/rangeslider.css') }}">
+
+<!-- js -->
+<script src="{{ url_for('static', path='/js/cars.js') }}"></script>
+<script src="{{ url_for('static', path='/js/rangeslider.min.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+{% include "loader.html" %}
+<img id="banner" src="{{ url_for('static', path='/images/cars-banner.png') }}">
+
+<div id="content">
+    <h2>Cars</h2>
+
+    <div id="filters">
+        <div class="filter" id="filter-type">
+            <span class="filter-name">Type</span>
+            <img class="filter-cancel" src="{{ url_for('static', path='/icons/cancel.svg') }}">
+            <img class="filter-arrow" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+            <div class="filter-dropdown">
+                <a href="#" class="filter-dropdown-item" data-type="hybrid">Hybrid</a>
+                <a href="#" class="filter-dropdown-item" data-type="gasoline">Gasoline</a>
+                <a href="#" class="filter-dropdown-item" data-type="minivan">Minivan</a>
+            </div>
+        </div>
+        <div class="filter" id="filter-make">
+            <span class="filter-name">Make</span>
+            <img class="filter-cancel" src="{{ url_for('static', path='/icons/cancel.svg') }}">
+            <img class="filter-arrow" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+            <!-- TODO: add icons for make -->
+            <div class="filter-dropdown">
+                <a href="#" class="filter-dropdown-item" data-make="Toyota">Toyota</a>
+                <a href="#" class="filter-dropdown-item" data-make="Volkswagen">Volkswagen</a>
+                <a href="#" class="filter-dropdown-item" data-make="Nissan">Nissan</a>
+                <a href="#" class="filter-dropdown-item" data-make="KIA">KIA</a>
+                <a href="#" class="filter-dropdown-item" data-make="Ford">Ford</a>
+                <a href="#" class="filter-dropdown-item" data-make="Honda">Honda</a>
+                <a href="#" class="filter-dropdown-item" data-make="Acura">Acura</a>
+                <a href="#" class="filter-dropdown-item" data-make="Lexus">Lexus</a>
+                <a href="#" class="filter-dropdown-item" data-make="Dodge">Dodge</a>
+                <a href="#" class="filter-dropdown-item" data-make="Hyundai">Hyundai</a>
+                <a href="#" class="filter-dropdown-item" data-make="Mazda">Mazda</a>
+                <a href="#" class="filter-dropdown-item" data-make="Chevrolet">Chevrolet</a>
+            </div>
+        </div>
+        <div class="filter" id="filter-price">
+            <span class="filter-name">Price</span>
+            <img class="filter-cancel" src="{{ url_for('static', path='/icons/cancel.svg') }}">
+            <img class="filter-arrow" src="{{ url_for('static', path='/icons/dropdown-arrow.svg') }}">
+            <div class="filter-dropdown">
+                <div id="filter-price-inputs">
+                    <div class="filter-price-field">
+                    <span class="filter-price-label">From</span>
+                    <input id="filter-price-min-input" value="{{ filters.price.min }}">
+                    <span class="filter-price-currency">$</span>
+                    </div>
+                    <div class="filter-price-field">
+                    <span class="filter-price-label">To</span>
+                    <input id="filter-price-max-input" value="{{ filters.price.max }}">
+                    <span class="filter-price-currency">$</span>
+                    </div>
+                </div>
+
+                <input type="text" id="filter-price-slider" name="filter-price" value="">
+                <button id="filter-price-button">Apply</button>
+            </div>
+        </div>
+
+        <div class="filter" id="filter-sort">
+            <img src="{{ url_for('static', path='/icons/sort.svg') }}">
+            <div class="filter-dropdown">
+                <a href="#" class="filter-dropdown-item{% if not filters.sort or filters.sort == 'model' %} filter-dropdown-item-current{% endif %}" data-sort="model">By model</a>
+                <a href="#" class="filter-dropdown-item{% if filters.sort == 'price-asc' %} filter-dropdown-item-current{% endif %}" data-sort="price-asc">By price (first low-price)</a>
+                <a href="#" class="filter-dropdown-item{% if filters.sort == 'price-desc' %} filter-dropdown-item-current{% endif %}" data-sort="price-desc">By price (first high-price)</a>
+                <a href="#" class="filter-dropdown-item{% if filters.sort == 'year' %} filter-dropdown-item-current{% endif %}" data-sort="year">By year</a>
+            </div>
+        </div>
+    </div>
+
+    {% include "inline_loader.html" %}
+    <template id="car-card-template">
+        <div class="car-view">
+            <div class="car-view-header">
+                <span class="car-view-name"></span>
+                <span class="car-view-nickname"></span>
+                <span class="car-view-price"></span>
+            </div>
+            <img class="car-view-image" src="" alt="Car image">
+            <div class="car-view-details">
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Year</span>
+                    <span class="car-view-detail-value car-year"></span>
+                </div>
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Type</span>
+                    <span class="car-view-detail-value car-type"></span>
+                </div>
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Engine</span>
+                    <span class="car-view-detail-value car-engine"></span>
+                </div>
+            </div>
+        </div>
+    </template>
+    <div id="cars-list">
+    </div>
+
+</div>
+
+{% endblock %}

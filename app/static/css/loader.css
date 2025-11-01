@@ -32,13 +32,13 @@ body:not(.loading) > *:not(#loader) {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.loader-ring {
+#loader-ring {
   position: relative;
   width: 100px;
   height: 100px;
 }
 
-.loader-logo {
+#loader-logo {
   position: absolute;
   width: 80px;
   height: 80px;
@@ -48,7 +48,7 @@ body:not(.loading) > *:not(#loader) {
   transform: translate(-50%, -50%);
 }
 
-.loader-ring::before {
+#loader-ring::before {
   content: "";
   position: absolute;
   top: 50%;

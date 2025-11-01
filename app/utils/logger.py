@@ -21,11 +21,19 @@ environ["GRPC_LOG_SEVERITY_LEVEL"] = "ERROR"
 
 
 class ShortNameFormatter(logging.Formatter):
+    def __init__(
+        self, fmt: str | None = None, datefmt: str | None = None, colorful: bool = True
+    ) -> None:
+        super().__init__(fmt, datefmt)
+        self.colorful = colorful
+
     def format(self, record):
         if record.name == "desicars":
             record.display_name = ""
+        elif self.colorful:
+            record.display_name = f"[bold]{record.name.split('.')[-1]}:[/bold] "
         else:
-            record.display_name = record.name.split(".")[-1] + ": "
+            record.display_name = f"{record.name.split('.')[-1]}: "
         return super().format(record)
 
 
@@ -46,8 +54,9 @@ def setup_logging(level: str = "INFO", colorful: bool = False) -> logging.Logger
     else:
         handler = logging.StreamHandler(stream=stdout)
         formatter = ShortNameFormatter(
-            fmt="%(asctime)s [%(levelname)s] %(display_name)s%(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
+            "%(asctime)s [%(levelname)s] %(display_name)s%(message)s",
+            "%Y-%m-%d %H:%M:%S",
+            False,
         )
 
     handler.setFormatter(formatter)

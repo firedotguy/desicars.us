@@ -11,6 +11,8 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 
 from app.utils.firestore_mapper import map_car
 from app.utils.logger import get_logger, timed_log
+from app.enums import CarType, CarMake, CarSorting
+from app.schemas.car import Car
 
 initialize_app(Certificate("key.json"))
 db: Client = client()
@@ -34,12 +36,7 @@ def fetch_cars_count() -> int:
 def fetch_active_contracts_count() -> int:
     """Get all active contract count (where active is True)."""
     logger.debug("fetch active contracts count")
-    result = (
-        db.collection("Contract")
-        .where(filter=FieldFilter("Active", "==", True))
-        .count()
-        .get()
-    )
+    result = db.collection("Contract").where(filter=FieldFilter("Active", "==", True)).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
     logger.timed_debug("total active contracts count: %s", inner_result[0].value)
@@ -50,12 +47,7 @@ def fetch_active_contracts_count() -> int:
 def fetch_inactive_contracts_count() -> int:
     """Get all inactive contract count (where active is False)."""
     logger.debug("fetch inactive contracts count")
-    result = (
-        db.collection("Contract")
-        .where(filter=FieldFilter("Active", "==", False))
-        .count()
-        .get()
-    )
+    result = db.collection("Contract").where(filter=FieldFilter("Active", "==", False)).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
     logger.timed_debug("total inactvie contracts count: %s", inner_result[0].value)
@@ -66,14 +58,7 @@ def fetch_inactive_contracts_count() -> int:
 def fetch_new_contracts_count() -> int:
     """Get all new contracts count (created in last 31 days)."""
     logger.debug("fetch new contracts count")
-    result = (
-        db.collection("Contract")
-        .where(
-            filter=FieldFilter("begin_time", ">", datetime.now() - timedelta(days=31))
-        )
-        .count()
-        .get()
-    )
+    result = db.collection("Contract").where(filter=FieldFilter("begin_time", ">", datetime.now() - timedelta(days=31))).count().get()
 
     inner_result = cast(list[AggregationResult], result[0])
     logger.timed_debug("total new contracts count: %s", inner_result[0].value)
@@ -82,36 +67,70 @@ def fetch_new_contracts_count() -> int:
 
 @timed_log
 def fetch_cars(
-    type: str | None = None, limit: int | None = None, active: bool | None = None
-) -> list[dict]:
-    """Get first N cars with type"""
+    type: CarType | None = None, active: bool | None = False, make: CarMake | None = None,
+    price_min: int | None = None, price_max: int | None = None,
+    sort: CarSorting = CarSorting.MODEL, limit: int | None = None, _excule_not_web: bool = True,
+    _exclude_no_price: bool = True
+) -> list[Car]:
+    """Fetch cars data"""
     logger.debug(
-        "fetch cars type=%s status=%s limit=%s",
-        type or "all",
-        "free" if active is True else "rent" if active is False else "all",
-        limit or "no",
+        "fetch cars type=%s status=%s make=%s sort=%s price_min=%s price_max=%s limit=%s",
+        type.value if type else "all",
+        "free" if active is False else "rent" if active is True else "all",
+        make.value if make else 'all',
+        sort.value,
+        price_min or '-',
+        price_max or '-',
+        limit or "no"
     )
-    cars: list[dict] = []
+    cars: list[Car] = []
     query = db.collection("cars")
     if type:
-        query = query.where(filter=FieldFilter("type", "==", type))
-    if active:
+        query = query.where(filter=FieldFilter("type", "==", type.value))
+    if active is not None:  # if false, do not passing, so checking only on None
         query = query.where(
             filter=FieldFilter(
-                "status",
-                "in",
-                (
-                    ("Свободна", "свободна", "Free", "free")
-                    if active
-                    else ("Занята", "занята", "rent", "Rent")
-                ),
+                "status", "in", ("Занята", "занята", "Аренда", "аренда", "rent", "Rent")
+                if active else ("Свободна", "свободна", "Free", "free"),
             )
         )
+    if make:
+        query = query.where(filter=FieldFilter('make', '==', make.value.upper()))
+    if price_min and price_min != 0 or _exclude_no_price:
+        query = query.where(filter=FieldFilter('def_price', '>', price_min or 0))
+    if price_max and price_max != 1000:
+        query = query.where(filter=FieldFilter('def_price', '<', price_max))
+    if _excule_not_web:
+        query = query.where(filter=FieldFilter('photo_website', '!=', []))
+
+    match sort:
+        case CarSorting.MODEL:
+            query = query.order_by('model')
+        case CarSorting.PRICE_ASC:
+            query = query.order_by('def_price')
+        case CarSorting.PRICE_DESC:
+            query = query.order_by('def_price', direction='DESCENDING')
+        case CarSorting.YEAR:
+            query = query.order_by('year', direction='DESCENDING')
+
     if limit:
         query = query.limit(limit)
 
-    for car in query.get():
+    for car in query.stream():
         cars.append(map_car(car.to_dict() or {}))
 
     logger.timed_debug("fetched cars count: %s", len(cars))
     return cars
+
+
+@timed_log
+def fetch_car(nickname: str) -> Car | None:
+    """Fetch car by nickname."""
+    logger.debug("fetch car nickname=%s", nickname)
+    car = db.collection("cars").where(filter=FieldFilter("nickname", "==", nickname)).get()
+
+    if not car:
+        logger.timed_debug("car not found")
+        return
+    logger.timed_debug("fetched car")
+    return map_car(car[0].to_dict() or {})

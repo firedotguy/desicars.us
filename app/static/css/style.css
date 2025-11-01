@@ -9,8 +9,8 @@
 
 body {
   margin: 0;
-  height: 100vh;
   background-color: #141414;
+  overflow-x: hidden;
 }
 
 
@@ -81,7 +81,7 @@ a:active {
   flex-wrap: nowrap;
 
   /* border-bottom: 1px solid #373737; */
-  background-color: transparent;
+  background-color: #00000056;
   transition: background-color ease 0.3s;
 
   position: absolute;
@@ -142,28 +142,13 @@ a:active {
 }
 
 
-#header-favorite {
-  width: 27px;
-  height: 22px;
-  padding-left: 35%;
-}
-
-
-#header-phone {
-  flex-shrink: 0;
-  padding-left: 30%;
-  line-height: 27px;
-  font-weight: 400;
-  font-size: 15.2px;
-}
-
-
 #header-city {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  padding-right: 10%;
 }
 
 #header-city-name {
@@ -186,14 +171,16 @@ a:active {
 #header-city-dropdown {
   display: none;
   flex-direction: column;
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  background: rgba(15, 15, 15, 0.98);
+
+  background: #0f0f0ffa;
   border: 1px solid #222;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 5px 15px #00000066;
   border-radius: 6px;
   padding: 10px 15px;
+
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
   z-index: 3;
   animation: fadeIn 0.2s ease;
   min-width: 140px;
@@ -207,9 +194,12 @@ a:active {
   font-size: 15px;
   transition: color 0.2s ease, transform 0.15s ease;
 }
+#header-city-dropdown-current {
+  color: #FF854D;
+}
 
 .header-city-dropdown-item:hover {
-  color: #EB5E1B;
+  color: #EB5E1B !important;
   transform: translateX(4px);
 }
 
@@ -253,6 +243,21 @@ a:active {
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+#header-favorite {
+  width: 23px;
+  height: auto;
+  padding-left: 20%;
+}
+
+
+#header-phone {
+  flex-shrink: 0;
+  padding-left: 30%;
+  line-height: 27px;
+  font-weight: 400;
+  font-size: 15.2px;
+}
 
 
 
