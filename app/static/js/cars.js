@@ -147,21 +147,39 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const renderCars = (cars) => {
-    if (!listEl) return;
-    if (!cars || !cars.length) {
-      listEl.innerHTML = '<div id="cars-not-found">No cars found</div>';
-      return;
-    }
-    const html = cars
-      .map((c) => {
-        const title = (c.vehicle && (c.vehicle.name || `${c.vehicle.make || ''} ${c.vehicle.model || ''}`.trim())) || c.nickname;
-        const price = c.price != null ? `$${c.price}` : "";
-        const year = c.vehicle && c.vehicle.year ? c.vehicle.year : "";
-        return `<div class="car-item"><div class="car-title">${title}</div><div class="car-meta">${year} ${price}</div></div>`;
-      })
-      .join("");
-    listEl.innerHTML = html;
-  };
+  if (!listEl) return;
+  if (!cars || !cars.length) {
+    listEl.innerHTML = '<div id="cars-not-found">No cars found</div>';
+    return;
+  }
+  const tpl = document.getElementById('car-card-template');
+  listEl.innerHTML = '';
+  cars.forEach((c) => {
+    const name = c.vehicle.name;
+    const nickname = c.nickname || '';
+    const price = c.price != null ? `$${c.price}` : '';
+    const year = (c.vehicle && c.vehicle.year) ? c.vehicle.year : '-';
+    const type = (c.vehicle && c.vehicle.type) ? c.vehicle.type : '-';
+    const engine = c.engine || '-';
+    const img = c.web_photos[0];
+
+    const node = tpl.content.firstElementChild.cloneNode(true);
+    node.querySelector('.car-view-name').textContent = name;
+    const nickEl = node.querySelector('.car-view-nickname');
+    if (nickEl) nickEl.textContent = nickname;
+    node.querySelector('.car-view-price').textContent = price;
+    const imgEl = node.querySelector('.car-view-image');
+    imgEl.src = img; imgEl.alt = name;
+    const yearEl = node.querySelector('.car-year');
+    if (yearEl) yearEl.textContent = year;
+    const typeEl = node.querySelector('.car-type');
+    if (typeEl) typeEl.textContent = type;
+    const engEl = node.querySelector('.car-engine');
+    if (engEl) engEl.textContent = engine;
+
+    listEl.appendChild(node);
+  });
+};
 
   const updateCurrentClasses = (params) => {
     // Sort
@@ -218,9 +236,9 @@ const hideInlineLoader = () => {
     fetch(`/api/cars${qs ? `?${qs}` : ""}`)
       .then((r) => r.json())
       .then((data) => renderCars(data))
-      .catch(() => {
-        if (listEl) listEl.innerHTML = '<div id="cars-error">Failed to load cars</div>';
-      })
+    //   .catch(() => {
+    //     if (listEl) listEl.innerHTML = '<div id="cars-error">Failed to load cars</div>';
+    //   })
       .finally(() => {
         if (firstLoad) {
           setLoaderVisible(false);
@@ -238,7 +256,6 @@ const hideInlineLoader = () => {
     const max = parseInt(params.get('price_max') || `${DEFAULT_MAX}`);
     const minInput = document.getElementById("filter-price-min-input");
     const maxInput = document.getElementById("filter-price-max-input");
-    const sliderInput = document.getElementById("filter-price-slider");
     if (minInput) minInput.value = `${min}`;
     if (maxInput) maxInput.value = `${max}`;
     if (priceSlider && typeof priceSlider.update === 'function') { priceSlider.update({ from: min, to: max }); }
@@ -261,6 +278,9 @@ const hideInlineLoader = () => {
       }
       history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
       toggleCancelButtons(params);
+      // Hide the dropdown after applying
+      const priceFilterEl = document.getElementById('filter-price');
+      if (priceFilterEl) priceFilterEl.classList.remove('active');
       syncPriceUIFromParams(params);
       loadCars(params);
     });
@@ -335,4 +355,7 @@ const hideInlineLoader = () => {
     loadCars(getParams());
   });
 });
+
+
+
 

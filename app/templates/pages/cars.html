@@ -85,7 +85,32 @@
     </div>
 
     {% include "inline_loader.html" %}
-    <div id="cars-list"></div>
+    <template id="car-card-template">
+        <div class="car-view">
+            <div class="car-view-header">
+                <span class="car-view-name"></span>
+                <span class="car-view-nickname"></span>
+                <span class="car-view-price"></span>
+            </div>
+            <img class="car-view-image" src="" alt="Car image">
+            <div class="car-view-details">
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Year</span>
+                    <span class="car-view-detail-value car-year"></span>
+                </div>
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Type</span>
+                    <span class="car-view-detail-value car-type"></span>
+                </div>
+                <div class="car-view-detail">
+                    <span class="car-view-detail-name">Engine</span>
+                    <span class="car-view-detail-value car-engine"></span>
+                </div>
+            </div>
+        </div>
+    </template>
+    <div id="cars-list">
+    </div>
 
 </div>
 

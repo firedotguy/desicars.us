@@ -80,7 +80,7 @@ def _safe_title(value: str | None) -> str | None:
 
 
 def map_car(data: dict) -> Car:
-    """Map Firestore car document → Pydantic Car"""
+    """Map firestore car document -> pydantic Car"""
     return Car(
         # changeoil={
         #     "start": data.get("OilChange_Start"),
@@ -105,7 +105,7 @@ def map_car(data: dict) -> Car:
         plate=_format_plate(data.get("plate")),
         # imei=int(data.get("device_imei", "0")) if data.get("device_imei") else None,
         engine=(data.get("engine") or None),
-        fuel=round(float(data.get("fuel", 0.0)), 2),
+        # fuel=round(float(data.get("fuel", 0.0)), 2),
         # renter=data.get("current_renter"),
         price=data.get("def_price"),
         status=_format_status(data.get("status")),
