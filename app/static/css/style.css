@@ -179,7 +179,7 @@ a:active {
   padding: 10px 15px;
 
   position: absolute;
-  top: calc(100% + 5px);
+  top: 100%;
   left: 0;
   z-index: 3;
   animation: fadeIn 0.2s ease;
