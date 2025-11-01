@@ -11,7 +11,7 @@
     <video id="video-content" src="{{ url_for('static', path='/videos/dallas.mp4')}}" autoplay muted loop playsinline></video>
     <div id="video-overlay">
         <span id="video-title">PREMIUM CAR RENTAL IN DALLAS</span>
-        <button id="video-button">CHOOSE CAR</button>
+        <button id="video-button" onclick="location.href='/cars';">CHOOSE CAR</button>
     </div>
 </div>
 <div id="content">
@@ -29,7 +29,7 @@
             <button class="car-slider-button" onclick="scrollCars('left', 'gasoline')">‹</button>
             <button class="car-slider-button" onclick="scrollCars('right', 'gasoline')">›</button>
         </div>
-        <button class="car-category-all">SEE ALL</button>
+        <button class="car-category-all" onclick="location.href='/cars?type=gasoline';">SEE ALL</button>
     </div>
 
     <div class="car-slider-container" id="gasoline-slider">
@@ -190,7 +190,7 @@
             <button class="car-slider-button" onclick="scrollCars('left', 'hybrid')">‹</button>
             <button class="car-slider-button" onclick="scrollCars('right', 'hybrid')">›</button>
         </div>
-        <button class="car-category-all">SEE ALL</button>
+        <button class="car-category-all" onclick="location.href='/cars?type=hybrid';">SEE ALL</button>
     </div>
 
     <div class="car-slider-container" id="hybrid-slider">
@@ -350,7 +350,7 @@
             <button class="car-slider-button" onclick="scrollCars('left', 'minivan')">‹</button>
             <button class="car-slider-button" onclick="scrollCars('right', 'minivan')">›</button>
         </div>
-        <button class="car-category-all">SEE ALL</button>
+        <button class="car-category-all" onclick="location.href='/cars?type=minivan';">SEE ALL</button>
     </div>
 
     <div class="car-slider-container" id="minivan-slider">
