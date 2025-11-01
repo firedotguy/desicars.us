@@ -250,14 +250,16 @@
 
 #reviews {
   display: flex;
-  gap: 32px;
-  overflow: hidden;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
   width: 100vw;
   background: #141414;
-  scroll-behavior: smooth;
   position: relative;
   left: -150px;
 }
+#reviews::-webkit-scrollbar { display: none; }
 
 .review-card {
   flex: 0 0 27%;
